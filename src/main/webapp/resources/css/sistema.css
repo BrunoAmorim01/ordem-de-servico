@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+
+body {
+	font-size: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	background: #f8f8f8;
+}
+
+header {
+	padding: 5px 0px;
+	height: 80px;
+	background: #000000;
+	margin-bottom: 50px;
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+header>div {
+	
+}
+
+.menu-sistema {
+	border: 5px !important;
+	padding: 0px !important;
+	background: none !important;
+}
+
+.menu-sistema .ui-menu-parent>a .ui-menuitem-text, .menu-sistema>.ui-menu-list>.ui-menuitem>a .ui-menuitem-text
+	{
+	color: #ffffff !important;
+}
+
+#conteudo {
+	padding: 0px 8px;
+}
+
+footer {
+	padding: 0px 8px;
+	margin-bottom: 10px
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: 1000;
+	padding: 0;
+	margin: 50;
+	color: gray;
+}
+
+#login {
+	width: 290px;
+	margin: auto;
+	margin-top: 100px;
+}
+
+.grid-login {
+	background-color: #9a9a9a;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	margin-top: 8px;
+	padding: 10px;
+}
+
+.ajax-status {
+	position: fixed;
+	top: 10px;
+	right: 20px;
+	width: 35px;
+	height: 35px;
+}
+
+.rotulo {
+	width: 100px;
+}
+
+.campo {
+	width: 20px;
+}

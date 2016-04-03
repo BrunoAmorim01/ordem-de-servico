@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">Colaboradores</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmPesquisa">
+			<p:panel header="Pesquisa de Colaboradores">
+				<p:dataTable id="Colaboradores" style="margin-left: 0px;"
+					emptyMessage="Nenhum registro encontrado"
+					value="#{colaboradorBean.colaboradores}" var="c" paginator="true"
+					paginatorAlwaysVisible="false" rows="15">
+
+					<f:facet name="header">
+						<p:commandButton value="Novo Colaborador" icon="fa fa-plus"
+							actionListener="#{colaboradorBean.novo()}"
+							oncomplete="PF('dialog').show();" update=":frmCadastro:painel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Código">
+						<h:outputText value="#{c.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nº serie">
+						<h:outputText value="#{c.serieIdentificacao}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{c.usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{c.usuario.email}" />
+					</p:column>
+
+					<p:column headerText="Empresa">
+						<h:outputText value="#{c.empresa.nomeFantasia}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+
+						<p:commandButton icon="fa fa-edit" title="Editar"
+							oncomplete="PF('dialog').show()" update=":frmCadastro:painel"
+							actionListener="#{colaboradorBean.carregarColaborador}">
+							<f:attribute name="colaboradorSelecionado" value="#{c}" />
+						</p:commandButton>
+
+						<p:commandButton icon="fa fa-trash" title="Excluir"
+							process="@this" actionListener="#{colaboradorBean.excluir}"
+							update=":msgGlobal frmPesquisa:Colaboradores">
+							<p:confirm icon="fa fa-exclamation-circle"
+								header="Confirmação de exclusão"
+								message="Deseja excluir o colaborador  ?" />
+							<f:attribute name="colaboradorSelecionado" value="#{c}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true" closable="false">
+					<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+						icon="fa fa-check" />
+					<p:commandButton value="Não" styleClass="ui-confirmdialog-no"
+						icon="fa fa-close" />
+				</p:confirmDialog>
+
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Colaboradores" widgetVar="dialog" modal="true"
+			resizable="false">
+
+			<h:form id="frmCadastro">
+				<h:panelGrid id="painel" columns="2">
+
+					<p:outputLabel value="Nome " />
+					<p:inputText size="50"
+						value="#{colaboradorBean.colaborador.usuario.nome}" />
+
+					<p:outputLabel value="Serie Identificação " />
+					<p:inputText size="50"
+						value="#{colaboradorBean.colaborador.serieIdentificacao}" />
+
+					<p:outputLabel value="E-mail " />
+					<p:inputText size="50"
+						value="#{colaboradorBean.colaborador.usuario.email}" />
+
+					<p:outputLabel value="Telefone " />
+					<p:inputMask size="20"
+						value="#{colaboradorBean.colaborador.usuario.telFixo}"
+						mask="(99)9999-9999" />
+
+					<p:outputLabel value="Celular " />
+					<p:inputMask size="20"
+						value="#{colaboradorBean.colaborador.usuario.telCelular}"
+						mask="(99)99999-9999" />
+
+					<p:outputLabel value="Empresa" />
+					<p:selectOneMenu value="#{colaboradorBean.colaborador.empresa}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemLabel="Selecione uma empresa"
+							noSelectionOption="true" />
+						<f:selectItems value="#{colaboradorBean.empresas}" var="e"
+							itemLabel="#{e.nomeFantasia}" itemValue="#{e}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Grupo" />
+					<p:selectManyCheckbox
+						value="#{colaboradorBean.colaborador.usuario.grupos}"
+						converter="omnifaces.SelectItemsConverter" layout="grid"
+						columns="2" required="true">
+						<f:attribute name="collectionType" value="java.util.ArrayList" />
+						<f:selectItems value="#{colaboradorBean.grupos}" var="g"
+							itemLabel="#{g.nome}" itemValue="#{g}" />
+					</p:selectManyCheckbox>
+
+					<p:outputLabel value="Usuario Ativo?" />
+					<p:selectBooleanCheckbox
+						value="#{colaboradorBean.colaborador.usuario.ativo}" />
+
+					<p:outputLabel value="Digite uma senha" />
+					<p:password id="Senha"
+						value="#{colaboradorBean.colaborador.usuario.senha}"
+						match="confSenha" strongLabel="Forte" goodLabel="Boa"
+						weakLabel="Fraca" required="true" />
+					<p:outputLabel value="Confirme a senha" />
+					<p:password id="confSenha" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar" icon="fa fa-save"
+						action="#{colaboradorBean.salvar()}"
+						update=":msgGlobal :frmPesquisa:Colaboradores :frmCadastro:painel" />
+					<p:commandButton value="Fechar" icon="fa fa-close" process="@this"
+						oncomplete="PF('dialog').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+
+</ui:composition>

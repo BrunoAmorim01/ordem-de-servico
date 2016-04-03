@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">Ordem de serviço - Pesquisa</ui:define>
+
+	<ui:define name="conteudo">
+		<div class="ui-fluid">
+			<h:form id="frmCadastro">
+
+				<p:toolbar style="margin-top:50px">
+					<p:toolbarGroup>
+						<p:commandButton value="Pesquisar" icon="fa fa-search"
+							action="#{pesquisaOrdemServicoBean.pesquisar}"
+							process="@this,osPesquisa" update="osList" />
+					</p:toolbarGroup>
+
+					<p:toolbarGroup align="right">
+						<p:button value="Novo" icon="fa fa-plus"
+							outcome="/ordemServico/osCadastro.xhtml" />
+					</p:toolbarGroup>
+
+				</p:toolbar>
+
+				<p:panelGrid id="osPesquisa" columns="2" style="margin-top:10px"
+					layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11">
+
+					<p:outputLabel value="Numero OS" />
+					<p:inputText value="#{pesquisaOrdemServicoBean.filter.codigo}" />
+
+					<p:outputLabel value="Data Abertura" />
+					<h:panelGroup>
+						<p:calendar value="#{pesquisaOrdemServicoBean.filter.dataDe}" /> a <p:calendar
+							value="#{pesquisaOrdemServicoBean.filter.datafim}" />
+					</h:panelGroup>
+
+					<p:outputLabel value="Processo" />
+					<p:inputText value="#{pesquisaOrdemServicoBean.filter.processo}" />
+
+					<p:outputLabel value="Solicitante" />
+					<p:inputText value="#{pesquisaOrdemServicoBean.filter.solicitante}" />
+
+					<p:outputLabel value="Fiscal" />
+					<p:inputText value="#{pesquisaOrdemServicoBean.filter.fiscal}" />
+
+					<p:outputLabel value="Categoria" />
+					<p:selectManyCheckbox layout="grid" columns="4"
+						value="#{pesquisaOrdemServicoBean.filter.categorias}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItems value="#{pesquisaOrdemServicoBean.categorias}"
+							var="cat" itemLabel="#{cat.nome}" itemValue="#{cat}" />
+					</p:selectManyCheckbox>
+
+					<p:outputLabel value="Status" />
+					<p:selectManyCheckbox layout="grid" columns="4"
+						value="#{pesquisaOrdemServicoBean.filter.status}">
+
+						<f:selectItems value="#{pesquisaOrdemServicoBean.status}"
+							var="status" itemValue="#{status}"
+							itemLabel="#{status.descricao}" />
+					</p:selectManyCheckbox>
+				</p:panelGrid>
+
+				<p:dataTable id="osList"
+					value="#{pesquisaOrdemServicoBean.ordemServicos}"
+					emptyMessage="Nenhum registro encontrado" paginator="true"
+					rows="10" paginatorAlwaysVisible="false" var="os"
+					style="margin-top:10px" reflow="true">
+
+					<p:column headerText="Codigo" sortBy="#{os.codigo}">
+						<h:outputText value="#{os.codigo}" />
+					</p:column>
+
+					<p:column headerText="Data">
+						<h:outputText value="#{os.dataOS}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Solicitante">
+						<h:outputText value="#{os.contribuinte.nome}" />
+					</p:column>
+
+					<p:column headerText="Fiscal">
+						<h:outputText value="#{os.colaborador.usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Categorias">
+
+						<ui:repeat var="cat" value="#{os.categorias}">
+							<h:outputText value="#{cat.nome}" />
+							<br />
+						</ui:repeat>
+					</p:column>
+
+					<p:column headerText="Status">
+						<h:outputText value="#{os.statusOrdemServico.descricao}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:button icon="fa fa-edit" title="Editar"
+							outcome="/ordemServico/osCadastro">
+							<f:param name="os" value="#{os.codigo}" />
+						</p:button>
+					</p:column>
+
+
+				</p:dataTable>
+
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

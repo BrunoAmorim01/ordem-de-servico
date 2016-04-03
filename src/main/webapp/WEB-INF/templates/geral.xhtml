@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="titulo"> Sistema de ordens de serviço</ui:insert></title>
+
+	<h:outputStylesheet library="css" name="sistema.css" />
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus styleClass="ajax-status">
+		<f:facet name="start">
+			<h:graphicImage value="/resources/images/loading.gif" height="50"
+				width="50" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<header>
+
+	<div id="logo">
+		<h:graphicImage value="/resources/images/logo.png" height="80"
+			width="500" />
+	</div>
+
+	<div id="menuHorizontal">
+		<h:form>
+			<p:menubar>
+				<p:submenu label="Cadastro">
+					<p:menuitem value="Categorias"
+						outcome="/categoria/categorias.xhtml" />
+					<p:menuitem value="Contribuintes" />
+					<p:menuitem value="Empresas" outcome="/empresa/empresas.xhtml" />
+					<p:submenu label="Usuarios">
+						<p:menuitem value="Funcionários"
+							outcome="/funcionario/funcionarios.xhtml" />
+						<p:menuitem value="Fiscais" outcome="/empresa/colaboradores.xhtml" />
+					</p:submenu>
+
+					<p:separator />
+
+				</p:submenu>
+
+				<p:submenu label="Ordem de serviço">
+					<p:menuitem value="Nova OS"
+						outcome="/ordemServico/osCadastro.xhtml" />
+					<p:menuitem value="Pesquisa de OS"
+						outcome="/ordemServico/osPesquisa.xhtml" />
+
+					<p:separator />
+
+					<p:menuitem value="Recebimento de OS"
+						outcome="/ordemServico/osRecebimento.xhtml" />
+					<p:menuitem value="Baixa de OS"
+						outcome="/ordemServico/osBaixa.xhtml" />
+
+
+				</p:submenu>
+
+				<p:submenu label="Relatórios">
+					<p:menuitem value="Ranking categorias"
+						outcome="/relatorios/rankingCategorias.xhtml" />
+					<p:menuitem value="OS emitidas"
+						outcome="/relatorios/ordemServicoEmitidos.xhtml" />
+				</p:submenu>
+
+
+				<p:menuitem icon="fa fa-sign-out" value="Logout" url="/logout" />
+				<p:menuitem icon="fa fa-sign-in" value="Login" url="/login" />
+
+				<f:facet name="options">
+					<h:outputText value="Olá #{seguranca.nomeUsuario}"
+						style="margin-right:50px" />
+				</f:facet>
+
+			</p:menubar>
+
+		</h:form>
+
+	</div>
+	</header>
+
+
+	<div id="conteudo" style="margin-top: 10px">
+		<p:messages id="msgGlobal" style="margin-top:10px;" closable="true" />
+		<ui:insert name="conteudo"></ui:insert>
+	</div>
+
+	<p:separator style="margin-top:10px" />
+
+	<footer>Sistema de geração de ordens de serviço - Todos os
+	direitos reservados <a href="http://google.com.br" target="_blank">teste.com.br</a>
+	</footer>
+
+</h:body>
+
+</html>

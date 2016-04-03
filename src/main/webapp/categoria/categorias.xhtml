@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">Dashboard</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmPesquisa">
+			<p:panel header="Pesquisa de Categorias">
+				<p:dataTable id="Categorias" style="margin-left: 0px;"
+					emptyMessage="Nenhum registro encontrado"
+					value="#{categoriaBean.categorias}" var="c" paginator="true"
+					paginatorAlwaysVisible="false" rows="15">
+
+					<f:facet name="header">
+						<p:commandButton value="Nova Categoria" icon="fa fa-plus"
+							actionListener="#{categoriaBean.init()}"
+							oncomplete="PF('dialog').show();" update=":frmCadastro:painel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>					
+
+					<p:column headerText="Código">
+						<h:outputText value="#{c.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nome" filterBy="#{c.nome}" sortBy="#{c.nome}">
+						<h:outputText value="#{c.nome}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="fa fa-edit" title="Editar"
+							process="@this" oncomplete="PF('dialog').show()"
+							update=":frmCadastro:painel">
+							<f:setPropertyActionListener value="#{c}"
+								target="#{categoriaBean.categoria}" />
+						</p:commandButton>
+
+						<p:commandButton icon="fa fa-trash" title="Excluir"
+							process="@this" actionListener="#{categoriaBean.excluir}"
+							update=":msgGlobal frmPesquisa:Categorias">
+
+							<p:confirm icon="fa fa-exclamation-circle" header="Confirmação de exclusão"
+								message="Deseja excluir a categoria #{c.nome} ?" />
+								<f:attribute name="catSelecionada" value="#{c}" />							
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:confirmDialog global="true" closable="false">
+					<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+					<p:commandButton value="Não" styleClass="ui-confirmdialog-no" icon="fa fa-close"/>
+				</p:confirmDialog>
+
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Categorias" widgetVar="dialog" modal="true"
+			resizable="false">
+			<h:form id="frmCadastro">
+				<h:panelGrid id="painel" columns="2">
+					<p:outputLabel value="Nome " />
+					<p:inputText size="30" value="#{categoriaBean.categoria.nome}"
+						required="true"></p:inputText>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar" icon="fa fa-save" action="#{categoriaBean.salvar()}"
+						update=":msgGlobal :frmPesquisa:Categorias :frmCadastro:painel" />
+					<p:commandButton value="Fechar" icon="fa fa-close" oncomplete="PF('dialog').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+
+</ui:composition>

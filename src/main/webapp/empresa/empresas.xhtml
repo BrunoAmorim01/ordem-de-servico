@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">Empresas</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmPesquisa">
+			<p:panel header="Pesquisa de Empresas">
+				<p:dataTable id="Empresas" style="margin-left: 0px;"
+					emptyMessage="Nenhum registro encontrado"
+					value="#{empresaBean.empresas}" var="e" paginator="true"
+					paginatorAlwaysVisible="false" rows="15">
+
+					<f:facet name="header">
+						<p:commandButton value="Nova Empresa" icon="fa fa-plus"
+							actionListener="#{empresaBean.init()}"
+							oncomplete="PF('dialog').show();" update=":frmCadastro:painel">
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column headerText="Código">
+						<h:outputText value="#{e.codigo}" />
+					</p:column>
+
+					<p:column headerText="CNPJ">
+						<h:outputText value="#{e.CNPJ}" />
+					</p:column>
+
+					<p:column headerText="Nome Fantasia" sortBy="#{e.nomeFantasia}"
+						filterBy="#{e.nomeFantasia}">
+						<h:outputText value="#{e.nomeFantasia}" />
+					</p:column>
+
+					<p:column headerText="Razão Social">
+						<h:outputText value="#{e.razaoSocial}" />
+					</p:column>
+
+					<p:column headerText="Opções">
+						<p:commandButton icon="fa fa-edit" title="Editar"
+							process="@this" oncomplete="PF('dialog').show()"
+							update=":frmCadastro:painel">
+							<f:setPropertyActionListener value="#{e}"
+								target="#{empresaBean.empresa}" />
+						</p:commandButton>
+
+						<p:commandButton icon="fa fa-trash" title="Excluir"
+							process="@this" actionListener="#{empresaBean.excluir}"
+							update=":msgGlobal frmPesquisa:Empresas">
+							<p:confirm icon="fa fa-exclamation-circle" header="Confirmação de exclusão"
+								message="Deseja excluir a empresa #{e.nomeFantasia} ?" />
+							<f:attribute name="empresaSelecionada" value="#{e}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog global="true" closable="false">
+					<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+					<p:commandButton value="Não" styleClass="ui-confirmdialog-no" icon="fa fa-close"/>
+				</p:confirmDialog>
+
+			</p:panel>
+		</h:form>
+
+		<p:dialog header="Empresas" widgetVar="dialog" modal="true"
+			resizable="false" closable="false">
+
+			<h:form id="frmCadastro">
+				<h:panelGrid id="painel" columns="2">
+
+					<p:outputLabel value="CNPJ " />
+					<p:inputMask size="30" value="#{empresaBean.empresa.CNPJ}"
+						mask="99.999.999/9999-99" />
+
+					<p:outputLabel value="Nome Fantasia " />
+					<p:inputText size="50" value="#{empresaBean.empresa.nomeFantasia}" />
+
+					<p:outputLabel value="Razão Social " />
+					<p:inputText size="50" value="#{empresaBean.empresa.razaoSocial}" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar" icon="fa fa-save" action="#{empresaBean.salvar()}"
+						update=":msgGlobal :frmPesquisa:Empresas :frmCadastro:painel" />
+					
+					<p:commandButton value="Fechar" icon="fa fa-close" oncomplete="PF('dialog').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+
+</ui:composition>

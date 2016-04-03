@@ -1,0 +1,322 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">#{osCadastroBean.editando ? "Edição de ordem de Serviço" : "Cadastro de ordem de serviço"}</ui:define>
+
+	<ui:define name="conteudo">
+
+		<f:metadata>
+			<o:viewParam name="os" value="#{osCadastroBean.ordemServico}" />
+			<f:event listener="#{osCadastroBean.init}" type="preRenderView" />
+		</f:metadata>
+
+		<div class="ui-fluid">
+			<h:form id="frmCadastro">
+				<p:toolbar>
+					<f:facet name="left">
+						<p:button value="Novo" icon="fa fa-plus"
+							outcome="/ordemServico/osCadastro.xhtml"
+							rendered="#{seguranca.salvarOrdemServico}" />
+
+						<p:commandButton value="Salvar" icon="fa fa-save"
+							style="margin-left:10px" action="#{osCadastroBean.salvar}"
+							update="@form,msgCapa" process="@this,capaOS,tabView"
+							disabled="#{osCadastroBean.ordemServico.editavel or not seguranca.salvarOrdemServico}" />
+
+						<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+							<p:printer target="frmCadastro" />
+						</p:commandButton>
+					</f:facet>
+
+					<f:facet name="right">
+						<p:commandButton value="Cancelar" icon="fa fa-times"
+							style="margin-right:10px" process="@this"
+							action="#{cancelamentoOrdemServicoBean.cancelar}"
+							update="msgCapa,capaOS"
+							disabled="#{osCadastroBean.ordemServico.cancelavel or not seguranca.cancelarOrdemServico}" />
+
+						<p:button value="Pesquisar" icon="fa fa-search"
+							outcome="/ordemServico/osPesquisa.xhtml" />
+
+					</f:facet>
+				</p:toolbar>
+
+				<h2>#{osCadastroBean.editando ? "Edição de ordem de Serviço" :
+					"Cadastro de ordem de serviço"}</h2>
+
+				<p:messages id="msgCapa" autoUpdate="true" />
+
+				<div class="ui-fluid">
+
+					<p:panelGrid id="capaOS" columns="4" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
+
+						<p:outputLabel value=" Ordem de serviço" />
+						<p:outputLabel value="#{osCadastroBean.ordemServico.codigo}"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+
+						<p:outputLabel value=" Processo (se houver)" />
+						<p:inputText value="#{osCadastroBean.ordemServico.processo}"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+
+						<p:outputLabel value="Data solicitação" />
+						<p:inputText value="#{osCadastroBean.ordemServico.dataOS}"
+							readonly="true"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+							<f:convertDateTime pattern="dd/MM/yy" locale="pt_BR"
+								timeZone="America/Sao_Paulo" />
+						</p:inputText>
+
+						<p:outputLabel for="tel" value="Telefone" />
+						<p:inputText id="tel" maxlength="20"
+							value="#{osCadastroBean.ordemServico.contribuinte.telefone}"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+
+						<p:outputLabel for="solicitante" value=" Solicitante" />
+						<h:panelGroup>
+							<p:autoComplete id="solicitante"
+								value="#{osCadastroBean.ordemServico.contribuinte}"
+								dropdown="true" maxResults="10" forceSelection="true"
+								completeMethod="#{cadastroContribuinteBean.carregarContribuintes}"
+								var="c" itemLabel="#{c.nome}" itemValue="#{c}"
+								converter="contribuinteConverter"
+								disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+
+								<p:ajax event="itemSelect"
+									listener="#{osCadastroBean.setarContribuinte}" update="tel" />
+
+
+							</p:autoComplete>
+
+							<p:commandButton style="margin-left:50px" icon="ui-icon-plus"
+								title="Não encontrou o solicitante ? adicione-o por aqui "
+								oncomplete="PF('contribuinteCadastroDialog').show();"
+								process="@this"
+								disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+						</h:panelGroup>
+
+						<h:outputLabel value="Serviço" for="servico" />
+						<h:panelGroup id="listaCat">
+							<h:panelGrid columns="2">
+								<p:selectCheckboxMenu id="servico"
+									value="#{osCadastroBean.ordemServico.categorias}"
+									label="Serviços" filter="true" filterMatchMode="startsWith"
+									converter="omnifaces.SelectItemsConverter"
+									disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+									<f:attribute name="collectionType" value="java.util.ArrayList" />
+									<f:selectItems value="#{osCadastroBean.categorias}" var="cat"
+										itemLabel="#{cat.nome}" itemValue="#{cat}" />
+
+									<p:ajax event="toggleSelect" update="listaCat" />
+									<p:ajax update="listaCat" />
+								</p:selectCheckboxMenu>
+
+								<ui:repeat var="cat"
+									value="#{osCadastroBean.ordemServico.categorias}">
+								#{cat.nome}; 
+								</ui:repeat>
+
+							</h:panelGrid>
+
+						</h:panelGroup>
+
+						<p:outputLabel value=" Empresa Responsável" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+							value="#{osCadastroBean.empresa}" filter="true"
+							filterMatchMode="contains"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+							<f:selectItem itemLabel="Selecione uma empresa"
+								noSelectionOption="true" />
+							<f:selectItems value="#{osCadastroBean.empresas}" var="empresa"
+								itemLabel="#{empresa.nomeFantasia}" itemValue="#{empresa}" />
+
+							<p:ajax listener="#{osCadastroBean.carregarFiscais}"
+								update="fiscal" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value=" Programado para" />
+						<p:calendar size="6"
+							value="#{osCadastroBean.ordemServico.programadoPara}"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+
+						<p:outputLabel value="Fiscal responsável" />
+						<p:selectOneMenu id="fiscal"
+							value="#{osCadastroBean.ordemServico.colaborador}"
+							converter="omnifaces.SelectItemsConverter" filter="true"
+							filterMatchMode="contains"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+							<f:selectItem itemLabel="Selecione um responsável"
+								noSelectionOption="true" />
+							<f:selectItems value="#{osCadastroBean.colaboradores}"
+								var="colaborador" itemLabel="#{colaborador.usuario.nome}"
+								itemValue="#{colaborador}" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel for="func" value="Funcionario" />
+						<p:selectOneMenu id="func"
+							value="#{osCadastroBean.ordemServico.funcionario}"
+							converter="omnifaces.SelectItemsConverter"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{osCadastroBean.funcionarios}" var="f"
+								itemLabel="#{f.usuario.nome}" itemValue="#{f}" />
+
+						</p:selectOneMenu>
+
+						<p:outputLabel value=" Status" />
+						<p:outputLabel
+							value="#{osCadastroBean.ordemServico.statusOrdemServico.descricao}" />
+					</p:panelGrid>
+				</div>
+
+				<p:tabView id="tabView" style="margin-top:10px">
+
+					<p:tab id="tabLocal" title="Local">
+
+						<p:panelGrid id="pnlLocal" layout="grid" columns="7"
+							columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1">
+							<p:outputLabel value="Bairro" />
+							<p:selectOneMenu id="bairro"
+								value="#{osCadastroBean.enderecoOS.bairro}"
+								converter="omnifaces.SelectItemsConverter" filter="true"
+								filterMatchMode="contains">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione um bairro" />
+								<f:selectItems value="#{osCadastroBean.bairros}" var="bairro"
+									itemLabel="#{bairro.nome}" itemValue="#{bairro}" />
+								<p:ajax process="@this" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Logradouro" />
+							<p:autoComplete id="logradouro"
+								value="#{osCadastroBean.enderecoOS.logradouro}"
+								completeMethod="#{osCadastroBean.carregarEnderecos}"
+								minQueryLength="3" maxResults="10"
+								disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+								<f:attribute name="logPesquisa"
+									value="#{osCadastroBean.enderecoOS}" />
+
+								<p:ajax event="itemSelect" process="@this,bairro" />
+							</p:autoComplete>
+
+							<p:outputLabel value="Referencia" />
+							<p:inputText value="#{osCadastroBean.referencia}" />
+							<h:panelGroup>
+
+								<p:commandButton icon="ui-icon-plus"
+									actionListener="#{osCadastroBean.adicionarEndereco}"
+									update=":frmCadastro:tabView:pnlLocal :frmCadastro:tabView:listaEndereco"
+									process="@this,tabLocal"
+									disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+							</h:panelGroup>
+						</p:panelGrid>
+
+						<p:dataTable id="listaEndereco"
+							value="#{osCadastroBean.ordemServico.servicoEndereco}"
+							var="enderecoOS">
+
+							<p:column headerText="Bairro">
+								<p:outputLabel value="#{enderecoOS.endereco.bairro.nome}"></p:outputLabel>
+							</p:column>
+
+							<p:column headerText="Logradouro">
+								<p:outputLabel value="#{enderecoOS.endereco.logradouro}" />
+							</p:column>
+
+							<p:column headerText="Referencia">
+								<p:outputLabel value="#{enderecoOS.referencia}"></p:outputLabel>
+							</p:column>
+
+							<p:column headerText="Opções">
+								<p:commandButton icon="ui-icon-minus" title="Remover Endereco"
+									process="@this"
+									actionListener="#{osCadastroBean.removeEndereco}"
+									update="listaEndereco"
+									disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}">
+									<f:attribute name="enderecoSelecionado" value="#{enderecoOS}"></f:attribute>
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="Observações">
+						<p:outputLabel for="obs" value="Observações" rendered="true" />
+						<p:inputTextarea id="obs"
+							value="#{osCadastroBean.ordemServico.observacoes}" rows="5"
+							style="width: 100%"
+							disabled="#{osCadastroBean.ordemServico.naoAlteravel or seguranca.fiscal}" />
+					</p:tab>
+
+					<p:tab title="Fiscal">
+						<p:panelGrid columns="4">
+
+							<p:outputLabel value=" Inicio" />
+							<p:calendar />
+
+							<p:outputLabel value=" Metragem" />
+							<p:inputText />
+
+							<p:outputLabel value=" Termino" />
+							<p:calendar />
+
+							<p:outputLabel value=" QTDE viagem" />
+							<p:inputText />
+
+							<p:outputLabel value=" Condições técnicas" />
+							<p:inputTextarea />
+
+							<p:outputLabel value=" QTDE gari" />
+							<p:inputText />
+
+						</p:panelGrid>
+					</p:tab>
+
+				</p:tabView>
+
+				<p:dialog id="dialogContribuinte"
+					widgetVar="contribuinteCadastroDialog"
+					header="Cadastro Rápido: Contribuinte" resizable="false"
+					closable="false" style="min-width:300px" styleClass="ui-fluid"
+					modal="true" responsive="true">
+
+					<p:panelGrid id="contribuinteCadastro" layout="grid" columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8">
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{cadastroContribuinteBean.contribuinte.nome}" />
+
+						<p:outputLabel value="Telefone" />
+						<p:inputMask mask="(99) 99999-9999"
+							value="#{cadastroContribuinteBean.contribuinte.telefone}" />
+
+					</p:panelGrid>
+
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8">
+						<p:commandButton icon="ui-icon-check" value="Salvar"
+							action="#{cadastroContribuinteBean.addContribuinte}"
+							update="msgCapa" process="@this,contribuinteCadastro"
+							oncomplete="PF('contribuinteCadastroDialog').hide();" />
+						<p:commandButton icon="ui-icon-close" value="Fechar"
+							style="margin-left:40px;"
+							oncomplete="PF('contribuinteCadastroDialog').hide();"
+							process="@this" />
+
+					</p:panelGrid>
+				</p:dialog>
+
+			</h:form>
+
+		</div>
+	</ui:define>
+
+
+</ui:composition>

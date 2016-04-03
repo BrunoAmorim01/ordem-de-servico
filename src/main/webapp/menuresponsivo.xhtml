@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type"
+		content="width=device-width;text/html; charset=UTF-8" />
+	<title>Menu</title>
+
+	<h:outputScript library="js" name="jquery-2.2.2.min.js" />
+	<h:outputScript library="js" name="bootstrap/bootstrap.js" />
+	<h:outputStylesheet library="css" name="bootstrap/bootstrap.css" />
+
+</h:head>
+
+
+<h:body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#bar1">
+				<span class="sr-only">Toggle navigation</span> 
+				<span class="icon-bar"></span> 
+				<span class="icon-bar"></span> 
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Site</a>
+		</div>
+		
+		<div class="collapse navbar-collapse" id="bar1">
+			<ul class="nav navbar-nav">
+		          <li class="active"><a href="#">Link 1</a></li>
+		          <li><a href="#">Link 2</a></li>
+		          <li><a href="#">Link 3</a></li>
+			</ul>
+		</div>
+
+	</nav>
+</h:body>
+
+</html>

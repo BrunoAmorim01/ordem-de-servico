@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/WEB-INF/templates/geral.xhtml">
+
+	<ui:define name="titulo">Dashboard</ui:define>
+
+	<ui:define name="conteudo">
+		<div class="ui-fluid">
+			<h2>Baixa de Ordem de serviço</h2>
+			<h:form>
+				<p:dataTable id="listaRecebimento"
+					value="#{baixaOrdemServicoBean.ordemServicos}"
+					selection="#{baixaOrdemServicoBean.ordemServicoselecionados}"
+					rowKey="#{os.codigo}" var="os"
+					emptyMessage="Nenhum Registro encontrado" rows="10"
+					paginator="true" paginatorAlwaysVisible="false" reflow="true">
+
+					<f:facet name="header">
+						<p:commandButton icon="fa fa-check-circle"
+							title="Dar Baixa"
+							actionListener="#{baixaOrdemServicoBean.baixarOs}"
+							update="listaRecebimento">
+							<p:confirm header="Confirmação"
+								message="Voce tem certeza uqe deseja Dar baixa nas Ordens de Serviço selecionadas?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</f:facet>
+
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+
+					<p:column style="width:16px">
+						<p:rowToggler />
+					</p:column>
+
+					<p:column headerText="Codigo" width="60">
+						<h:outputText value="#{os.codigo}" />
+					</p:column>
+
+					<p:column headerText="Solicitante">
+						<h:outputText value="#{os.contribuinte.nome}" />
+					</p:column>
+
+					<p:column headerText="Serviços">
+						<p:dataList value="#{os.categorias}" var="x">
+					#{x.nome}
+				</p:dataList>
+					</p:column>
+
+					<p:column headerText="Locais">
+						<p:dataList value="#{os.servicoEndereco}" var="x">
+					#{x.endereco.bairro.nome} - #{x.endereco.logradouro}
+				</p:dataList>
+					</p:column>
+
+					<p:column headerText="Fiscal">
+						<h:outputText value="#{os.colaborador.usuario.nome}" />
+					</p:column>
+
+					<p:rowExpansion>
+						<p:panelGrid columns="1" layout="grid">
+							<p:outputLabel value="Obs:" />
+							<p:inputTextarea readonly="true" value="#{os.observacoes}"
+								style="width:100%" />
+						</p:panelGrid>
+					</p:rowExpansion>
+
+				</p:dataTable>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+				</p:confirmDialog>
+
+			</h:form>
+		</div>
+	</ui:define>
+
+
+</ui:composition>
