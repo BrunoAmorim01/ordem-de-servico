@@ -20,7 +20,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<!--<version>2.4</version> -->
+				<version>3.5.1</version>
 
 				<configuration>
 					<source>1.8</source>
@@ -57,8 +58,8 @@
 					</execution>
 				</executions>
 			</plugin>
-		
-		</plugins>	
+
+		</plugins>
 	</build>
 
 	<!-- Repositórios -->
@@ -107,7 +108,14 @@
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>
 			<artifactId>weld-servlet</artifactId>
-			<version>2.3.2.Final</version>
+			<version>2.3.3.Final</version>
+		</dependency>
+
+		<!-- OmniFaces -->
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>2.2</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -159,14 +167,6 @@
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
 
-
-		<!-- OmniFaces -->
-		<dependency>
-			<groupId>org.omnifaces</groupId>
-			<artifactId>omnifaces</artifactId>
-			<version>2.2</version>
-		</dependency>
-
 		<!-- Commons Lang (utilidades) -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -178,8 +178,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
+			<version>3.1.0</version>			
 		</dependency>
 
 		<!-- javax.transaction -->
@@ -209,7 +208,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Jasper Reports -->

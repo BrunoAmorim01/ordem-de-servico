@@ -3,12 +3,16 @@ package br.com.atendimento.Service;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
 import br.com.atendimento.DAO.CategoriaDAO;
 import br.com.atendimento.model.Categoria;
 import br.com.atendimento.util.jpa.Transactional;
 
+@RequestScoped
 public class CategoriaService implements Serializable {
 
 	private static final long serialVersionUID = 7672553057650654684L;

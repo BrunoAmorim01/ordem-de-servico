@@ -3,11 +3,13 @@ package br.com.atendimento.DAO;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
 
 import br.com.atendimento.model.Contribuinte;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class ContribuinteDAO extends GenericDAO<Contribuinte> implements Serializable {
 
 	public List<Contribuinte> porNome(String nome) {

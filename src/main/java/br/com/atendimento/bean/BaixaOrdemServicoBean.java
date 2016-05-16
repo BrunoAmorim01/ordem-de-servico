@@ -16,14 +16,17 @@ import br.com.atendimento.Security.UsuarioSistema;
 import br.com.atendimento.Service.BaixaOrdemServicoService;
 import br.com.atendimento.model.OrdemServico;
 
+
 @Named
 @ViewScoped
-public class BaixaOrdemServicoBean implements Serializable {
+public class BaixaOrdemServicoBean implements Serializable {	
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	@UsuarioLogado
 	UsuarioSistema usuarioSistema;
 	
-	@Inject
+	@Inject	
 	private OrdemServicoDAO ordemServicoDAO;
 
 	@Inject

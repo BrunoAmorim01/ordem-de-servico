@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -18,6 +19,7 @@ import br.com.atendimento.model.StatusOrdemServico;
 import br.com.atendimento.model.Usuario;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class OrdemServicoDAO extends GenericDAO<OrdemServico> implements Serializable {
 
 	@SuppressWarnings("unchecked")

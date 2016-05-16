@@ -2,6 +2,7 @@ package br.com.atendimento.Service;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import br.com.atendimento.DAO.EmpresaDAO;
@@ -9,6 +10,7 @@ import br.com.atendimento.model.Empresa;
 import br.com.atendimento.util.jpa.Transactional;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class EmpresaService implements Serializable {
 
 	@Inject

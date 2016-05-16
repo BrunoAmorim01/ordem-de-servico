@@ -1,25 +1,21 @@
 package br.com.atendimento.util.jpa;
 
-import java.io.Serializable;
-
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.transaction.Transactional;
 
 @Interceptor
 @Transactional
-public class TransactionInterceptor implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class TransactionInterceptor {
 
 	private @Inject EntityManager manager;
 
 	@AroundInvoke
 	public Object gerenciaTransacao(InvocationContext context) throws Exception {
-
 		EntityTransaction tx = null;
 		try {
 			// em ambiente JTA apenas o getTransaction já lança exceção
@@ -33,7 +29,6 @@ public class TransactionInterceptor implements Serializable {
 				tx.rollback();
 			throw e;
 		}
-
 	}
 
 }

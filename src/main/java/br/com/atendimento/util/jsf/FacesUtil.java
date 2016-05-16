@@ -3,7 +3,9 @@ package br.com.atendimento.util.jsf;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+
 public class FacesUtil {
+	
 	public static boolean isPostback() {
 		return FacesContext.getCurrentInstance().isPostback();
 

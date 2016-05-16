@@ -2,6 +2,7 @@ package br.com.atendimento.DAO;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -12,6 +13,7 @@ import org.omnifaces.util.Messages;
 import br.com.atendimento.model.Usuario;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class UsuarioDAO extends GenericDAO<Usuario> implements Serializable {
 
 	@Inject

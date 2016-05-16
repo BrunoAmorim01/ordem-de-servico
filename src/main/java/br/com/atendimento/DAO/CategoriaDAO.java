@@ -1,11 +1,8 @@
 package br.com.atendimento.DAO;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
 
 import org.hibernate.Criteria;
@@ -17,25 +14,23 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
 import br.com.atendimento.DAO.filter.CategoriaRankFilter;
-import br.com.atendimento.DAO.filter.OrdemServicoFilter;
 import br.com.atendimento.model.Categoria;
 import br.com.atendimento.model.OrdemServico;
 import br.com.atendimento.model.vo.CategoriaQuantidade;
+import br.com.atendimento.util.jpa.Transactional;
 
-public class CategoriaDAO extends GenericDAO<Categoria> implements Serializable {
+@RequestScoped
+public class CategoriaDAO extends GenericDAO<Categoria> {
 
-	private static final long serialVersionUID = 1L;
-
+	
 	public List<Categoria> lista(String ordenacao) {
+		System.out.println("lsit cat dao");
 
 		String consulta = "SELECT c FROM Categoria c ORDER BY " + ordenacao;
 
 		TypedQuery<Categoria> query = manager.createQuery(consulta, Categoria.class);
 
-		List<Categoria> resultado = query.getResultList();
-
-		// Categoria[] hue = new Categoria[resultado.size()];
-		// hue = resultado.toArray(hue);
+		List<Categoria> resultado = query.getResultList();		
 
 		return resultado;
 	}

@@ -1,7 +1,6 @@
 package br.com.atendimento.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,12 +17,12 @@ import br.com.atendimento.Service.CategoriaService;
 import br.com.atendimento.model.Categoria;
 import br.com.atendimento.util.jpa.Transactional;
 
+@SuppressWarnings("serial")
 @Named
 @ViewScoped
-public class CategoriaBean implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class CategoriaBean implements Serializable {	
 
-	@Inject
+	@Inject	
 	private CategoriaDAO categoriaDAO;
 
 	@Inject
@@ -34,15 +33,17 @@ public class CategoriaBean implements Serializable {
 	private List<Categoria> categorias;
 
 	@PostConstruct
-	public void init() {
-		categorias = new ArrayList<>();
+	public void init() {	
+		
+		System.out.println("init cat");
+		
 		categoria = new Categoria();
-		categorias = categoriaDAO.list("nome");
+		categorias = categoriaService.listar();
 	}
 
 	public void salvar() {
 
-		categoria = categoriaService.salvar(categoria);
+		//categoria = categoriaService.salvar(categoria);
 		categorias = categoriaDAO.list("nome");
 		init();
 		Messages.addGlobalInfo("Categoria salva com sucesso");

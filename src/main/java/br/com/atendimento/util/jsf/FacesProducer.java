@@ -6,6 +6,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
+@RequestScoped
 public class FacesProducer {
 
 	@Produces

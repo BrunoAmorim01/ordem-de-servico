@@ -9,6 +9,7 @@ import br.com.atendimento.DAO.OrdemServicoDAO;
 import br.com.atendimento.model.OrdemServico;
 import br.com.atendimento.util.jpa.Transactional;
 
+@SuppressWarnings("serial")
 public class RecebimentoOrdemServicoService implements Serializable {
 
 	@Inject

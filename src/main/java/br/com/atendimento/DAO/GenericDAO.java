@@ -10,8 +10,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
 
-import br.com.atendimento.util.jpa.Transactional;
-
 public class GenericDAO<T> implements Dao<T> {
 	private static final Logger LOGGER;
 	private final Class<T> classeDeEntidade;
@@ -34,8 +32,8 @@ public class GenericDAO<T> implements Dao<T> {
 		return manager.merge(t);
 	}
 
-	@Override	
-	public void remove(T t) {		
+	@Override
+	public void remove(T t) {
 		Object id = this.getValorDoId(t);
 		T entidadeGerenciada = porIdLazy(id);
 		manager.remove(entidadeGerenciada);
@@ -52,6 +50,9 @@ public class GenericDAO<T> implements Dao<T> {
 	}
 
 	public List<T> list(String ordenacao) {
+		
+		System.out.println("list com ordenacao");
+		
 		String nomeDeEntidade = this.classeDeEntidade.getSimpleName();
 		String jpql = "SELECT t FROM " + nomeDeEntidade + " t " + " ORDER BY " + "t." + ordenacao;
 

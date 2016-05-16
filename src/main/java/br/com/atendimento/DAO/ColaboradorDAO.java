@@ -3,12 +3,14 @@ package br.com.atendimento.DAO;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
 
 import br.com.atendimento.model.Colaborador;
 import br.com.atendimento.model.Empresa;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class ColaboradorDAO extends GenericDAO<Colaborador> implements Serializable {
 
 	public List<Colaborador> listColaboradorPorempresa(Empresa empresa) {

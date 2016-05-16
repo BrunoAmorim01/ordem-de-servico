@@ -3,7 +3,7 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
-	<persistence-unit name="AtendimentoOnline">
+	<persistence-unit name="AtendimentoOnline" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<class>br.com.atendimento.model.Categoria</class>
@@ -21,16 +21,14 @@
 		<class>br.com.atendimento.model.OrdemServicoCategoria</class>
 
 		<properties>
-		
+		<!--
 			 <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-243-243-89.compute-1.amazonaws.com:5432/dfqlll9eh1kuvs"/>
 			 <property name="javax.persistence.jdbc.user" value="bioqkeukkxwhtn" /> 
-			 <property name="javax.persistence.jdbc.password" value="IazCNpdSlpbHITTnRBYGytxeQ2"/>  
-
-			<!--
+			 <property name="javax.persistence.jdbc.password" value="IazCNpdSlpbHITTnRBYGytxeQ2"/> --> 
+			
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/ordemservico"/>
 			<property name="javax.persistence.jdbc.user" value="postgres" /> 
-			<property name="javax.persistence.jdbc.password" value="ROOT" />-->
-			
+			<property name="javax.persistence.jdbc.password" value="ROOT" />			
 			
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/> 
 			 <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/> 
@@ -40,17 +38,11 @@
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="root" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />-->
-			
-			
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />-->			
 
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" />
-
 			
-			
-
-
 		</properties>
 
 	</persistence-unit></persistence>

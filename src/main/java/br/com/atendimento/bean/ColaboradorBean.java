@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -18,7 +16,6 @@ import br.com.atendimento.DAO.ColaboradorDAO;
 import br.com.atendimento.DAO.EmpresaDAO;
 import br.com.atendimento.Service.ColaboradorService;
 import br.com.atendimento.bean.event.ColaboradorAlteradoEvent;
-import br.com.atendimento.bean.event.ColaboradorEdicao;
 import br.com.atendimento.model.Colaborador;
 import br.com.atendimento.model.Empresa;
 import br.com.atendimento.model.Grupo;
@@ -28,6 +25,7 @@ import br.com.atendimento.model.Usuario;
 @Named
 @ViewScoped
 public class ColaboradorBean implements Serializable {
+	
 
 	@Inject
 	private ColaboradorService colaboradorService;
@@ -48,8 +46,8 @@ public class ColaboradorBean implements Serializable {
 	@Inject
 	private List<Grupo> grupos;
 
-	@Inject
-	private Event<ColaboradorAlteradoEvent> event;
+//	@Inject
+//	private Event<ColaboradorAlteradoEvent> event;
 
 	@PostConstruct
 	public void init() {

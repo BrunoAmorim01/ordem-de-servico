@@ -1,21 +1,13 @@
 package br.com.atendimento.DAO;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
+import javax.enterprise.context.RequestScoped;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-
-import br.com.atendimento.exception.NegocioException;
 import br.com.atendimento.model.Empresa;
-import br.com.atendimento.util.jpa.Transactional;
 
 @SuppressWarnings("serial")
+@RequestScoped
 public class EmpresaDAO extends GenericDAO<Empresa> implements Serializable {
 	
 //	@Inject

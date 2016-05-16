@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
 public class EntityManagerProducer {
 
 	EntityManagerFactory factory;
-
+	
 	public EntityManagerProducer() {
 		factory = Persistence.createEntityManagerFactory("AtendimentoOnline");
 	}
@@ -20,10 +20,12 @@ public class EntityManagerProducer {
 	@Produces
 	@RequestScoped
 	public EntityManager create() {
+		System.out.println("entity aberto");
 		return factory.createEntityManager();
 	}
 
 	public void close(@Disposes EntityManager manager) {
+		System.out.println("entity fechado");
 		manager.close();
 	}
 

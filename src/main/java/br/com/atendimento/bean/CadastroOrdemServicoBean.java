@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.faces.component.UIComponent;
@@ -16,7 +14,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Hibernate;
 import org.omnifaces.util.Messages;
 import org.primefaces.event.SelectEvent;
 
@@ -60,6 +57,7 @@ public class CadastroOrdemServicoBean implements Serializable {
 	private List<Colaborador> colaboradores;
 	private List<EnderecoOS> enderecos;
 	private List<Funcionario> funcionarios;
+	
 	@Inject
 	private List<Empresa> empresas;
 
@@ -144,8 +142,7 @@ public class CadastroOrdemServicoBean implements Serializable {
 
 	@Transactional
 	public void adicionarEndereco() {
-		enderecos = enderecoDAO.porLogradouro(enderecoOS.getLogradouro());
-		System.out.println("inocio" + enderecos.get(0).getCodigo());
+		enderecos = enderecoDAO.porLogradouro(enderecoOS.getLogradouro());		
 		OrdemServicoEndereco endereco = new OrdemServicoEndereco();
 
 		if (enderecos.isEmpty()) {
